@@ -4,6 +4,6 @@ packages: .
 source-repository-package
     type:     git
     location: https://github.com/joaquin-rossi/dovetail-unify.git
-    tag:      c9ea2b88e2fff54bc8f2aea0e6a58efc10f06dd6
+    tag:      v0.1.0.0
 
 index-state: 2026-11-09T00:00:00Z

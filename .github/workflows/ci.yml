@@ -95,7 +95,7 @@ jobs:
           {
             echo "Built from:"
             echo
-            echo "- dovetail-unify [\`${haskell:0:7}\`](https://github.com/joaquin-rossi/dovetail-unify/tree/$haskell)"
+            echo "- dovetail-unify [\`$haskell\`](https://github.com/joaquin-rossi/dovetail-unify/tree/$haskell)"
             echo "- ghc-wasm-bindgen [\`v$bindgen\`](https://github.com/joaquin-rossi/ghc-wasm-bindgen/releases/tag/v$bindgen)"
           } > notes.md
           gh release create "$GITHUB_REF_NAME" *.tgz --notes-file notes.md --generate-notes
