@@ -1,0 +1,24 @@
+{
+    "name": "dovetail-unify",
+    "version": "0.1.0",
+    "description": "Syntactic unification and anti-unification of first-order terms, compiled from Haskell to WebAssembly",
+    "license": "AGPL-3.0-or-later",
+    "author": "Joaquín Rossi <joaquin@joaquinrossi.net>",
+    "homepage": "https://github.com/joaquin-rossi/dovetail-unify-js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joaquin-rossi/dovetail-unify-js.git"
+    },
+    "keywords": ["unification", "anti-unification", "terms", "logic", "haskell", "wasm"],
+    "type": "module",
+    "files": ["dist"],
+    "exports": {
+        ".": { "types": "./dist/dovetail_unify.d.ts", "default": "./dist/dovetail_unify.js" },
+        "./runtime": { "types": "./dist/ghc_wasm_bindgen_runtime.d.ts", "default": "./dist/ghc_wasm_bindgen_runtime.js" },
+        "./dovetail_unify.wasm": "./dist/dovetail_unify.wasm"
+    },
+    "scripts": {
+        "build": "scripts/build.sh",
+        "test": "node --test"
+    }
+}

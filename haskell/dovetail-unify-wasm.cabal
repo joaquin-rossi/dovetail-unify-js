@@ -1,0 +1,13 @@
+cabal-version:      3.0
+name:               dovetail-unify-wasm
+version:            0.1.0.0
+synopsis:           The API of dovetail-unify exposed to JavaScript
+license:            AGPL-3.0-or-later
+build-type:         Simple
+
+library
+    exposed-modules:  DovetailWasm
+    hs-source-dirs:   src
+    default-language: GHC2024
+    ghc-options:      -Wall
+    build-depends:    base, dovetail-unify

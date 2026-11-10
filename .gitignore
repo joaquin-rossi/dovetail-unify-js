@@ -1,0 +1,14 @@
+# Generated
+dist/
+.cache/
+haskell/dist-newstyle/
+
+# npm
+node_modules/
+*.tgz
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~

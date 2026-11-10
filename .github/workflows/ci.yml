@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.10.3"
+          cabal-version: "3.14"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Cache the WASM toolchain
+        id: ghc-wasm
+        uses: actions/cache@v4
+        with:
+          path: ~/.ghc-wasm
+          key: ghc-wasm-9.14-${{ runner.os }}
+
+      - name: Install the WASM toolchain
+        if: steps.ghc-wasm.outputs.cache-hit != 'true'
+        run: curl -sSf https://gitlab.haskell.org/haskell-wasm/ghc-wasm-meta/-/raw/master/bootstrap.sh | FLAVOUR=9.14 sh
+
+      - name: Cache ghc-wasm-bindgen and cabal
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache
+            ~/.cabal/store
+            ~/.ghc-wasm/.cabal/store
+          key: build-${{ runner.os }}-${{ hashFiles('.ghc-wasm-bindgen-version', 'haskell/cabal.project', 'haskell/*.cabal') }}
+          restore-keys: build-${{ runner.os }}-
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Pack
+        run: npm pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: "*.tgz"
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: package
+
+      - name: Check the tag matches package.json
+        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          haskell=$(awk '/tag:/ { print $2 }' haskell/cabal.project)
+          bindgen=$(<.ghc-wasm-bindgen-version)
+          {
+            echo "Built from:"
+            echo
+            echo "- dovetail-unify [\`${haskell:0:7}\`](https://github.com/joaquin-rossi/dovetail-unify/tree/$haskell)"
+            echo "- ghc-wasm-bindgen [\`v$bindgen\`](https://github.com/joaquin-rossi/ghc-wasm-bindgen/releases/tag/v$bindgen)"
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" *.tgz --notes-file notes.md --generate-notes
