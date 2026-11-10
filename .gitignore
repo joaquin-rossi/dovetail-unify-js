@@ -1,5 +1,4 @@
 # Generated
-dist/
 .cache/
 haskell/dist-newstyle/
 

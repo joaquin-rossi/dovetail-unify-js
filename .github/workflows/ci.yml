@@ -48,6 +48,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      # The .wasm and the jsffi glue depend on the exact toolchain build.
+      - name: Check the committed bindings are up to date
+        run: |
+          changes=$(git status --porcelain -- src ':(exclude)src/*.wasm' ':(exclude)src/ghc_wasm_jsffi.js')
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            git diff -- src ':(exclude)src/*.wasm'
+            echo "::error::src/ is out of date; run npm run build and commit it"
+            exit 1
+          fi
+
       - name: Test
         run: npm test
 

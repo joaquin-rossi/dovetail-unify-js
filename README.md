@@ -46,12 +46,22 @@ From a [release](https://github.com/joaquin-rossi/dovetail-unify-js/releases):
 npm install https://github.com/joaquin-rossi/dovetail-unify-js/releases/download/v0.1.0/dovetail-unify-0.1.0.tgz
 ```
 
+Or from git, which needs [Git LFS](https://git-lfs.com) for the `.wasm`:
+
+```sh
+npm install github:joaquin-rossi/dovetail-unify-js#v0.1.0
+```
+
 ## Build
 
 ```sh
-npm run build   # writes dist/
+npm run build   # regenerates src/
 npm test
 ```
+
+`src/` is generated but committed (its `.wasm` through Git LFS), so the
+package can be used and tested without the Haskell toolchain, and a change in
+the bindings shows up in the diff.
 
 Requires GHC 9.10, cabal and the WASM toolchain from
 [ghc-wasm-meta](https://gitlab.haskell.org/haskell-wasm/ghc-wasm-meta) in

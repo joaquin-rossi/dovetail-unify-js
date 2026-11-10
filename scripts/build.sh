@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the bindings into dist/ with the ghc-wasm-bindgen version in
+# Builds the bindings into src/ with the ghc-wasm-bindgen version in
 # .ghc-wasm-bindgen-version, installing it into .cache/ the first time.
 #
 # Needs GHC 9.10 and cabal, and the WASM toolchain from ghc-wasm-meta
@@ -23,6 +23,6 @@ if [[ ! -x $bindgen ]]; then
     --installdir="$cache/bin" --install-method=copy --overwrite-policy=always)
 fi
 
-rm -rf "$root/dist"
+rm -rf "$root/src"
 cd "$root/haskell"
-"$bindgen" build src/DovetailWasm.hs --name dovetail_unify --out "$root/dist"
+"$bindgen" build src/DovetailWasm.hs --name dovetail_unify --out "$root/src"
