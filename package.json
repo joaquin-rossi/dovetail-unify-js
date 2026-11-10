@@ -11,11 +11,10 @@
     },
     "keywords": ["unification", "anti-unification", "terms", "logic", "haskell", "wasm"],
     "type": "module",
+    "engines": { "node": "^20.16.0 || >=22.3.0" },
     "files": ["src"],
     "exports": {
-        ".": { "types": "./src/dovetail_unify.d.ts", "default": "./src/dovetail_unify.js" },
-        "./runtime": { "types": "./src/ghc_wasm_bindgen_runtime.d.ts", "default": "./src/ghc_wasm_bindgen_runtime.js" },
-        "./dovetail_unify.wasm": "./src/dovetail_unify.wasm"
+        ".": { "types": "./src/dovetail_unify.d.ts", "default": "./src/dovetail_unify.js" }
     },
     "scripts": {
         "build": "scripts/build.sh",

@@ -2,6 +2,10 @@
 
 import * as $rt from "./ghc_wasm_bindgen_internal.js";
 
+export { HaskellError } from "./ghc_wasm_bindgen_internal.js";
+
+await $rt.load(new URL("./dovetail_unify.wasm", import.meta.url));
+
 export const Equation = (a0, a1) => ({ $tag: "Equation", contents: [a0, a1] });
 
 function encodeEquation(v) {

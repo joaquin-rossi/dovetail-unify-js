@@ -1,16 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { before, describe, it } from "node:test";
+import { describe, it } from "node:test";
 
 import {
     antiUnify, Equation, Fun, parseEquations, parseTerm, prettySubst,
     prettyTerm, prettyUnifyError, rename, subsumes, unify, unifyAll, Var,
 } from "dovetail-unify";
-import { init } from "dovetail-unify/runtime";
-
-before(async () => {
-    await init(await readFile(new URL(import.meta.resolve("dovetail-unify/dovetail_unify.wasm"))));
-});
 
 const term = (src) => parseTerm(src).Right;
 

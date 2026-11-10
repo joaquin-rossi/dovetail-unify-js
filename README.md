@@ -9,10 +9,6 @@ from Haskell to WebAssembly with
 
 ```ts
 import { antiUnify, parseTerm, prettySubst, prettyTerm, unify } from "dovetail-unify";
-import { init } from "dovetail-unify/runtime";
-import wasmUrl from "dovetail-unify/dovetail_unify.wasm?url";  // Vite
-
-await init(wasmUrl);
 
 function term(src: string) {
     const result = parseTerm(src);
@@ -27,11 +23,11 @@ const [gen] = antiUnify(term("f(a, a)"), term("f(b, b)"));
 prettyTerm(gen);                                     // "f(G1, G1)"
 ```
 
-`init` takes the URL or the bytes of the `.wasm`; in Node:
-
-```ts
-await init(await readFile(new URL(import.meta.resolve("dovetail-unify/dovetail_unify.wasm"))));
-```
+Importing the package loads the `.wasm` (with top-level `await`), so the
+functions are ready to call. It works in Node 20.16+ and 22.3+, and in
+bundlers that copy the `.wasm` next to the module (webpack 5, Vite, Parcel).
+With Vite, add `optimizeDeps: { exclude: ["dovetail-unify"] }`; with esbuild,
+copy `dovetail_unify.wasm` next to the bundle yourself.
 
 The API is the one of the Haskell library; see
 [`haskell/src/DovetailWasm.hs`](haskell/src/DovetailWasm.hs) for what is
